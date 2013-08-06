@@ -16,21 +16,27 @@ Harness.configure({
 		'../yourproject-all.js'
 	],
 
-	// добавляем обработчик события о заврешении очередного теста
 	listeners:
 	{
-		testfinalize: function (event, test)
+		// добавляем обработчик события о заврешении очередного теста
+		testfinalize: function(event, test)
 		{
 			var fail = test.$failCount,
-				pass = test.$failCount;
+				pass = test.$passCount;
 
-			var log = fail ? '>>>>>FAILED<<<<< ' : '[PASSED] ';
+			var log = (fail ? '~~~~~~~~\n FAILED  ' : '[PASSED] ') +
+				test.url + ' [pass: ' + pass + ', fail: ' + fail + ']' +
+				(fail ? '\n~~~~~~~~' : '');
 
-			log += test.url + ' [pass: ' + pass + ', fail: ' + fail + ']';
-
-			// пишем в лог информацию о тесте
 			console.log(log);
+		},
+
+		// добавляем обработчик события о заврешении всего пакета тестов
+		testsuiteend: function(event, harness)
+		{
+			console.log('END_TESTS');
 		}
+
 	}
 
 });

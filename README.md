@@ -26,17 +26,22 @@ Harness.configure({
 
 	listeners:
 	{
-		testfinalize: function (event, test)
+		testfinalize: function(event, test)
 		{
 			var fail = test.$failCount,
-				pass = test.$failCount;
+				pass = test.$passCount;
 
-			var log = fail ? '>>>>>FAILED<<<<< ' : '[PASSED] ';
-
-			log += test.url + ' [pass: ' + pass + ', fail: ' + fail + ']';
+			var log = (fail ? '~~~~~~~~\n FAILED  ' : '[PASSED] ') +
+				test.url + ' [pass: ' + pass + ', fail: ' + fail + ']' +
+				(fail ? '\n~~~~~~~~' : '');
 
 			console.log(log);
+		},
+		testsuiteend: function(event, harness)
+		{
+			console.log('END_TESTS');
 		}
+
 	}
 
 });
